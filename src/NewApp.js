@@ -1,20 +1,20 @@
 import './App.css'
 import { useState } from 'react'
-import { BrowserRouter as Router, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import Home from './NewApp'
 
-function App (props) {
+export function App (props) {
   const [count, setCount] = useState(0)
 
   return (
     <div className="App">
-      <main className="items-center px-6">
-        <header className="m-4">
-          <Router>
-            <Link to="/">Home</Link>
-            <Link to="/newapp">NewApp</Link>
-          </Router>
-        </header>
-        <section className="m-16">
+      <main className="h-full flex items-center px-6">
+        <Router>
+          <div>
+            <Route exact path='/' component={Home}/>
+          </div>
+        </Router>
+        <section className="w-full  m-16">
           <h1 className="text-3xl lg:text-5xl font-bold">
             Counter
           </h1>

@@ -1,99 +1,112 @@
-# (開発準備) ESLint + Prettier で Javascript のコード品質を保つ
+# React のチュートリアル 2 開発を始める
 
-## VSCode のインストール
+## 概要
 
-Jacascript & 無料のなかだと VSCode がかなり便利
+API からデータを取得して表示する ToDo を作る簡単なチュートリアル
 
-- リンクから VSCode([https://azure.microsoft.com/ja-jp/products/visual-studio-code/](https://azure.microsoft.com/ja-jp/products/visual-studio-code/))をインストール
+Javascript の開発は OK だけど、React はさわったことない方に向けて
+<br/>
+<br/>
+<br/>
 
-## もし入ってなかったら Node.js のインストール
 
-node.js([https://nodejs.org/ja/](https://nodejs.org/ja/))
+## 目次
 
-## ESLint
+- チュートリアル 1 開発環境の構築
 
-JavaScript のための静的検証ツール。コードを実行する前に明らかなバグを見つけたり、**コードのフォーマット**に関するルールに基づいて修正
+  - 準備(VSCode, node.js のインストール)
+  - アプリ(ひな形)を作成する
+  - 開発準備( ESLint + Prettier で Javascript のコード品質を保つ)
 
-- VSCode の左のメニューから Extentions(□ が 4 つのさいころみたいなアイコン) をクリック->「ESLint」を入力->インストール
+- **チュートリアル 2 React で開発**
 
-## Prettier
+  - **準備(CSSフレームワーク(Tailwind)をインストール)**
+  - **カウンターを作ってみる**
+  - **ルーティング(react-router-dom)を使ってページ遷移をやってみる**
 
-一行がなが～いコードを改行したり、**コードの品質**に関するルールに基づいて修正
+<!-- - チュートリアル 4 **Nuxt + ECS, Fargate を使用した場合の開発フロー** -->
+<br/>
+<br/>
 
-- VSCode の左のメニューから Extentions をクリック->「Prettier」を入力->インストール
+## 準備(CSSフレームワーク(Tailwind)を新ストール)
 
-## Vetur(Vue.js を扱う上で便利)
+### Tailwindをインストール
+bootstrapでもなんでも良いがcssフレームワークを入れておく、今回はTailwind
 
-入力保管やハイライト表示を行ってくれる Vue の編集用の拡張機能
+- リンクを参考に Tailwind([https://tailwindcss.com/docs/guides/create-react-app](https://tailwindcss.com/docs/guides/create-react-app))をインストール
+<br/>
+<br/>
 
-- VSCode の左のメニューから Extentions をクリック->「Vetur」を入力->インストール
 
-## Prettier と ESlint の併用
-
-機能が若干かぶる、併用のために
-
-prettier ➡️ eslint --fix 　の順番で行うためのパッケージをインストールする
-
-VSCode の上のメニューから View-＞ terminal でターミナルを開いて
-
+## カウンターを作ってみる
+App.jsを変更↓
 ```
-npm i --save-dev prettier-eslint
+import './App.css'
+import { useState } from 'react'
+
+function App (props) {
+  const [count, setCount] = useState(0)
+
+  return (
+    <div className="App">
+      <main className="h-full flex items-center px-6">
+        <section className="w-full  m-16">
+          <h1 className="text-3xl lg:text-5xl font-bold">
+            Counter
+          </h1>
+          <p className="text-3xl lg:text-5xl font-bold mt-2">{count}</p>
+          <button className="bg-indigo-500 font-semibold text-white py-2 px-4 rounded m-2" onClick={() => setCount(count + 1)}>Add</button>
+          <button className="bg-red-500 font-semibold text-white py-2 px-4 rounded m-2" onClick={() => setCount(count - 1)}>Sub</button>
+        </section>
+      </main>
+    </div>
+  )
+}
+
+export default App
 ```
+<br/>
 
-(参考)
-[https://qiita.com/ikngtty/items/4df2e13d2fa1c4c47528](https://qiita.com/ikngtty/items/4df2e13d2fa1c4c47528)
+### 解説
 
-## ファイルの保存時に ESLint + Prettier
+#### これがReact のコンポーネント
 
-- 上のメニューの「File」->「Prefrence」->「Settings」設定画面を開いたら右上の ファイルの形のアイコン をクリック
+コンポーネントは（“props” と呼ばれる）任意の入力を受け取り、
 
-Settings.json へ以下を追加
-
+画面上に React 要素(レンダリングするhtml)を返す
 ```
-{
-  "editor.formatOnSave": true, //saveのタイミングでprettier の実行
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
-  },
-  "vetur.format.defaultFormatter.js": "prettier-eslint",
-  "vetur.format.enable": false,
+function App (props) {
+  ...
+　...
+　...
+ return (
+   <div>
+     ...
+   </div>
+ )
 }
 ```
 
-## 確認
 
-これでファイル Save のタイミングで
-
+#### state を宣言
 ```
-mounted () {
-console.log("aaaaaaaaあaaaああああああああああああああああああああaaaあああああああ");
-},
+  const [count, setCount] = useState(0)
 ```
 
-↑ が ↓ へ自動で修正
+stateはコンポーネント内の変数。propsと違ってcomponent内で書き換え可能
 
-- インデントの修正
-- ダブルクォートをシングルクォートへ
-- 関数の後の余計なスペース削除
-- 末尾のセミコロン削除
-- 良い感じの改行
+上の場合はuseState(0)でstate=0初期化。stateを書き換えたい場合はsetCountを使う
 
+
+#### stateの参照
 ```
-mounted() {
-  console.log(
-    'aaaaaaaaあaaaああああああああああああああああああああaaaあああああああ'
-  )
-},
-
-構文エラーなどに対しても
+<p className="text-3xl lg:text-5xl font-bold mt-2">{count}</p>
 ```
+countは{count}でhtml内で参照できる
 
-const a = 1
-a = 2
+### ルーティングを使ってページ遷移する
 
+react-router-dom をインストール
 ```
-'a' is constant.
-'a' is assigned a value but never used.
+$ npm install react-router-dom
 ```
-
-コンソールへエラー表示される
